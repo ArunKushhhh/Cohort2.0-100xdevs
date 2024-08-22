@@ -48,7 +48,7 @@ function syncSleep() {
 
 //The difference between setTimeout and busy waiting is that in setTimeout the thread is free to proceed to the next line whereas in busy waiting the thread is not free
 
-//SOme other async functions
+//Some other async functions
 //fs.readFile - to read a file from your filesystem
 //Fetch - to fetch some data from an API endpoint
 
@@ -66,9 +66,40 @@ console.log("Hi there");
 //fs.readFile runs first because it is a async function and it takes time
 
 for (let i = 0; i < 1000000; i++) {
-  a++;
+  i++;
 }
 
 console.log("Hi there 2");
 //In JS if your thread is busy somewhere, even if a callback is resolved, even if the control should reach here, the thread remains busy in completing the tasks until the thread becomes idle
 //The thread after then completes the pending callbacks
+
+
+//stack, webAPIs and callback queue
+console.log("Hi there");
+
+setTimeout(function () {
+  console.log("from inside async fn 1");
+}, 20000);
+
+setTimeout(function () {
+  console.log("from inside async fn 2");
+}, 10000);
+
+let a = 0;
+for (let i = 0; i < 10; i++) {
+  a = a + 1;
+}
+
+console.log(a);
+//Go to latentFlip
+//Call Stack: Stack
+//things getting called are stacked one upon the other
+//web APIs
+//the setTimeout function runs here
+//Callback Queue
+//Once the setTimeout function has run completely, it waits for the call stack to get over, once it gets over things from the callback queue get called 
+
+//What if we put another setTimeout??
+//the ten seconds setTimeout gets completed first, so it goes to the callback queue first and will be executed first when the JS thread gets free
+
+//the webAPIs will stand in q queue in order in which they are completed, wait for the JS thread to run completely and when the JS thread becomes free it then pulls the functions from callback queue
